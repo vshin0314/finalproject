@@ -16,8 +16,16 @@ td{
   float: left;
 }
 </style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
 </head>
 <body>
+<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="Home.jsp">Home</a></li>
+
+		<li class="breadcrumb-item"><a href="About.jsp">About</a></li>
+		
+</ol>
 <form action="Servlet">
   Search<br>
   <input type="text" name="search">

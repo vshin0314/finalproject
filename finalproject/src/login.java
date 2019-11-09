@@ -36,7 +36,7 @@ public class login extends HttpServlet {
     	String src = (String) request.getParameter("src");
     	String username = (String) request.getParameter("un");
     	String password = (String) request.getParameter("pw");
-    	String next = "/index.jsp";
+    	String next = "/Home.jsp";
     	try {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(CREDENTIALS_STRING);
@@ -56,7 +56,7 @@ public class login extends HttpServlet {
 		    		ps.setString(2, password);
 		    		rs = ps.executeQuery();
 		    		//If username and password entered don't match
-		    		if(rs.next()) {
+		    		if(!rs.next()) {
 		    			next = "/login.jsp";
 		    			request.setAttribute("unError", "Password does not match!");
 		    		}
