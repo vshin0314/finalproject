@@ -49,7 +49,7 @@ function validate() {
 		      		<a class = "nav-link" href="Aboutus.jsp">About Us</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="About.jsp">About</a>
+		      		<a class = "nav-link" href="Profile.jsp">Profile</a>
 	      		</li>
 	      		<li class="nav-item">
 		      		<a class = "nav-link" href="register.jsp">Sign Up</a>

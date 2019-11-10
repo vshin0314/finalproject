@@ -74,7 +74,7 @@ public class Servlet extends HttpServlet {
 		SearchResult results = gson.fromJson(jsonString, SearchResult.class);
 		String json = gson.toJson(results);
 		session.setAttribute("data", json);
-		
+		request.setAttribute("keyword", search);
 		
 		System.out.println("helllllow");
 		System.out.println(jsonString);

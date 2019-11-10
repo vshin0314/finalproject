@@ -155,10 +155,10 @@ text-align: center;
 
 	
 		<div class ="col col-12 col-md-4">
-			<img src = "image/ken.jpg" class="rounded-circle" alt = "Ken Cen">
+			<img src = "image/ken.jpg" class="rounded-circle" alt = "KenCen">
 			<h2>Ken Cen</h2>
 			<h5>Master of CSCI561</h5>
-			<p>Ken Cen has so many minor, majors and expecting to get a Masters Degree in Computer Science at University of Southern California. So, I don't have space to list all his degree on this website.</p>
+			<p>Ken Cen has so many minors, majors and expecting to get a Masters Degree in Computer Science at University of Southern California. So, I don't have space to list all his degree on this website.</p>
 			<a href="https://www.linkedin.com/in/ken-cen-410373a2/" class="btn btn-info" role="button">View More</a>
 		</div>
 
