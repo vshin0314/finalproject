@@ -5,6 +5,8 @@
 <head>
 <style>
 
+	
+	
 body {
 background-image : url("image/background.jpg");
 background-size: cover; 
