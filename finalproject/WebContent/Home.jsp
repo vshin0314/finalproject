@@ -5,8 +5,6 @@
 <head>
 <style>
 
-	
-	
 body {
 background-image : url("image/background.jpg");
 background-size: cover; 
@@ -26,12 +24,17 @@ padding-top:20%;
   align-items: center;
   justify-content: center; 
 }
+#inlineFormCustomSelectPref{
+margin-top:0;
+}
 #title-id{
 width:40%;
 }
 
-#search{
+.form-control{
+margin-top: 10px;
 float:left;
+margin:0;
 }
 .navbar-bccolor{
 	background-color: #2F4F4F;
@@ -78,10 +81,29 @@ float:left;
 <div class="d-flex justify-content-center">
 <form action="Servlet">
  
-<input type="text" style = "width:400px;" class="form-control" id="search" name="search" placeholder = "Search Bills">
+<input type="text" style = "width:400px; margin-top: 20px;" class="form-control" id="search" name="search" placeholder = "Search Bills">
+<select id="select" style= "    width: 150px;margin-top: 20px;height: 40px;" onmouseout="return placeholder()" >
+    <option selected>--SELECT--</option>
+    <option value="bills">Bill</option>
+    <option value="users">User</option>
+    
+  </select>
 <input type = "submit" value = "Submit" class="btn btn-primary">
 
 </form>
 </div>
+<script>
+function placeholder() {
+   if(document.getElementById("select").value == "bills"){
+	   document.getElementById("search").setAttribute("placeholder", "Search Bills with keywords");
+   }
+   if(document.getElementById("select").value == "users"){
+	   document.getElementById("search").setAttribute("placeholder", "Search Users with First Name or Last Name");
+   
+   }
+}
+
+
+</script>
 </body>
 </html>

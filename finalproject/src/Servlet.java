@@ -39,7 +39,8 @@ public class Servlet extends HttpServlet {
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String search = (String) request.getParameter("search").trim().replaceAll("\\s", "+");;
+		String temp = (String) request.getParameter("search").trim();
+		String search = temp.replaceAll("\\s", "+");
 		String stringUrl = "https://api.propublica.org/congress/v1/bills/search.json?query=" + search;
         URL url = new URL(stringUrl);
         //URLConnection uc = url.openConnection();
@@ -74,7 +75,8 @@ public class Servlet extends HttpServlet {
 		SearchResult results = gson.fromJson(jsonString, SearchResult.class);
 		String json = gson.toJson(results);
 		session.setAttribute("data", json);
-		request.setAttribute("keyword", search);
+
+		request.setAttribute("keyword", temp);
 		
 		System.out.println("helllllow");
 		System.out.println(jsonString);

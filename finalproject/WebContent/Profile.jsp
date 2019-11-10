@@ -21,6 +21,10 @@ float:left;}
 #search{
 float:left;
 }
+#select{
+margin-top:0px;
+
+}
 
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -56,6 +60,12 @@ float:left;
 			<form action="Servlet">
  
 <input type="text" style = "width:400px;" class="form-control" id="search" name="search" placeholder = "Search Bills">
+<select id="select" style= "width: 150px;height: 40px;" onmouseout="return placeholder()" >
+    <option selected>--SELECT--</option>
+    <option value="bills">Bill</option>
+    <option value="users">User</option>
+    
+  </select>
 <input type = "submit" value = "Submit" class="btn btn-primary">
 
 </form>
@@ -114,7 +124,19 @@ Vicky Yu</p>
 	
 
 
+<script>
+function placeholder() {
+   if(document.getElementById("select").value == "bills"){
+	   document.getElementById("search").setAttribute("placeholder", "Search Bills with keywords");
+   }
+   if(document.getElementById("select").value == "users"){
+	   document.getElementById("search").setAttribute("placeholder", "Search Users with First Name or Last Name");
+   
+   }
+}
 
+
+</script>
 
 
 </body>
