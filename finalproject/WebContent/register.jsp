@@ -73,15 +73,32 @@ function validate() {
 <form name="register" action="login" onsubmit="return validate()">
  
   <input type="hidden" name="src" value="register">
+    
     <div class="form-group row">
-  <label for="title-id" class="col-sm-2 col-form-label text-sm-right" style="color: white; font-size: 32px;"><strong>Username:</strong> </label>
-  <div class="col-sm-7">
-
-					  <input type="text" style = "font-size: 32px;"  name ="un" placeholder="Enter Username">
-					  <span style  = "color: red;"> ${unError}</span>
-					  <br>				
+				<label for="release-date-id" style="color: white; font-size: 32px;"class="col-sm-2 col-form-label text-sm-right"><strong>First Name: </strong></label>
+				<div class="col-sm-7">
+					<input type="text" style = "font-size: 32px;" name ="fname"placeholder="Enter FirstName">
+				</div>
   </div>
+  <div class="form-group row">
+				<label for="release-date-id" style="color: white; font-size: 32px;"class="col-sm-2 col-form-label text-sm-right"><strong>Last Name: </strong></label>
+				<div class="col-sm-7">
+					<input type="text" style = "font-size: 32px;" name ="lname"placeholder="Enter LastName">
+				</div>
   </div>
+  <div class="form-group row">
+				<label for="release-date-id" style="color: white; font-size: 32px;"class="col-sm-2 col-form-label text-sm-right"><strong>Linkedin (Optional): </strong></label>
+				<div class="col-sm-7">
+					<input type="text" style = "font-size: 32px;" name ="linkedin"placeholder="Enter Linkedin link">
+				</div>
+  </div>
+  <div class="form-group row">
+				<label for="release-date-id" style="color: white; font-size: 32px;"class="col-sm-2 col-form-label text-sm-right"><strong>Username: </strong></label>
+				<div class="col-sm-7">
+					<input type="text" style = "font-size: 32px;" name ="un"placeholder="Enter Username">
+				</div>
+  </div>
+ 
   <br>
   <div class="form-group row">
 				<label for="release-date-id" style="color: white; font-size: 32px;"class="col-sm-2 col-form-label text-sm-right"><strong>Password: </strong></label>

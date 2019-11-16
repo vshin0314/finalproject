@@ -82,13 +82,13 @@ margin:0;
 <form action="Servlet">
  
 <input type="text" style = "width:400px; margin-top: 20px;" class="form-control" id="search" name="search" placeholder = "Search Bills">
-<select id="select" style= "    width: 150px;margin-top: 20px;height: 40px;" onmouseout="return placeholder()" >
-    <option selected>--SELECT--</option>
+<select name="select" id="select" style= "width: 150px;margin-top: 20px;height: 40px;" onmouseout="return placeholder()" >
+    <option value="selectnon">--SELECT--</option>
     <option value="bills">Bill</option>
     <option value="users">User</option>
     
   </select>
-<input type = "submit" value = "Submit" class="btn btn-primary">
+<input type = "submit" value = "Submit" class="btn btn-primary" onsubmit="return select()">
 
 </form>
 </div>
@@ -101,7 +101,15 @@ function placeholder() {
 	   document.getElementById("search").setAttribute("placeholder", "Search Users with First Name or Last Name");
    
    }
+ 
 }
+
+function select(){
+	if(document.getElementById("select").value == "selectnon"){
+		alert("Please select select select the toggle.");
+	}
+}
+
 
 
 </script>
