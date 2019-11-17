@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "find-my-bills",
+  "private_key_id": "6bbcb3817f65b700c948e5058ed5adf933a06beb",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDJhIJ/eRvIK81c\nrkaGF3hB+JrJ0qtzBGuBdkKH6wln8fHMBhaE6vK+duZGLC4nr7NzlUZV5auW+hXV\nzpv1O/DuiE/t59LGzy3hwNWCvkwR/P6aNFYe0FitRCTP3DZwKEna5Gfx5LXjbcaM\nVVEVNgIxvjhY2zQahK1+3PV7kQov4HtH726KpSvxtl3vVACRWC5F3DrqwXxRrBEB\nKOqTC3l0ZK3ycMzyJnNuGQevpsnBR0Hy3n9GAMNG07agAkSFHEF9S615BzNqwWoP\nkqDsPi1gGLGi6GskImotuD5/mEJ7SYWG3D++2/5+E62G9w59/eLM8gzA123y3vce\nIffgobfJAgMBAAECggEAC24HItN2hm9+6eX+nQYWwuh8CxIhDwMt/9KlKmVj4VqW\njtkSN5QbPun/3J9j4h9elnczMpW2Gk2b+xu0D9WdsEHYsBM+isU0goH3+j7wkfKf\naZVUrycSaIgdbbwSoGDrSM2SBw/PBekeN6vHz2QCqC9JreHc/jC5UHaYO9vO+pvE\no4NCgcJFbhqaGfsTbT2N1zBbRst9l3k2QV3hdlbt1UrJu7wkyI5CMuAALFdEX4Zs\nb/Z4I8MinOeMfA5iXrSUxuV6gtxK6eE7IhdLt13bBskp4AIRE8Da6g+FROe45C7K\nGa8wd424m6nEgK7WjF/I5RUSdQ9t6C5VVnyaIXdwKwKBgQDkpsSK1MoplYb/RAIA\nD6BHjMAJzk0SbLdkq5aULXIyA4o4s9sMtYVrceNDI9MXu3opeFB4u5ckuGBIT/pp\nTvui0NLDuEDKQF3/PUxrQBv5VD086gfozzqm9R/DPBJgP2is79J1EeRZynI36D+6\nDaOwFeW6Y3kPI4GRNVpnGsxLswKBgQDhnunOarj2jruwZnv+8mP0feQ/xRwPytg/\nqfwn8Mq0QEq5qja4lB0SJU+9YhiVsnW8ruzUPQex/3djF1NXr+pROzi1wYvOipPs\nb1MukVC+XH2TVZr6tIwHM4PmtJ55BOKJbRaRbaD1s0t/qrjOW6VCTNp4Bv2t+sVG\ncsCos0TAkwKBgQDcV0UhkGt85UZhaXUP//7x1FYfXPnynmegkKYcByt7vOOPPusB\ndU+sOeTKh5Rd02Gm4vWRUx0U2sSWCtSCdQWTYe8pgr6U6LBsTfL9i5spix80O0cB\n9+lKiP9h0drXe2Nw++7wuBw41xl4fMwkjA5ImuF123QGva2XdDW5FB75dwKBgA0X\npqOmx8Lu928+EzXxJOG8KHGW45D7CV9wYsSCkZCyJmPtv60oUyOJbL4loh2VtIVV\ndUK/o+GtXGUwplJxT9yU3i6V46IBoqHWt/H81r2lKlhRYGPp9DI6yA2sL4IASZEF\n9ohL30pCtD/dTUoUQVu+j/LlHPVqluYGpK1lcbjnAoGAdZIpgiKXA4kJJr0KM8T5\n55FDKftLNAdWTht7Rj1TvnNjJjxoFtAtGkGYM5pL+qkvQDn0c85JpF8pt/JgccW8\n6NW3j4XbUyRGD4U4u2Sc5fWSUtOMBSDeg0/rQedymZurp43eb9Zz5AMZovxAhZe+\nhDM9vNsxVrLjSTBdDTmrOxU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "find-my-bills@find-my-bills.iam.gserviceaccount.com",
+  "client_id": "109602926602774721004",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/find-my-bills%40find-my-bills.iam.gserviceaccount.com"
+}
