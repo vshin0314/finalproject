@@ -34,10 +34,10 @@ import java.util.ArrayList;
 @WebServlet("/Servlet")
 public class Servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	public static final String CREDENTIALS_STRING = "jdbc:mysql://google/find_my_bills?cloudSqlInstance=find-my-bills:us-west1:find-my-bills&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=sang&password=";
-    static Connection conn = null;
-    static PreparedStatement ps= null;
-    static ResultSet rs= null;
+	private static final String CREDENTIALS_STRING = "jdbc:mysql://google/find_my_bills?cloudSqlInstance=find-my-bills:us-west1:find-my-bills&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=sang&password=";
+    private static Connection conn = null;
+    private static PreparedStatement ps= null;
+    private static ResultSet rs= null;
     String search;
        
     /**
@@ -52,8 +52,6 @@ public class Servlet extends HttpServlet {
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			
-		HttpSession session = request.getSession();
 		String option = (String) request.getParameter("select");
 		if(option.equals("users")) {
 			try {
@@ -85,7 +83,7 @@ public class Servlet extends HttpServlet {
 					users.users[i] = temp.get(i);
 				}
 				String json = gson.toJson(users);
-				session.setAttribute("data", json);
+				request.setAttribute("data", json);
 				request.setAttribute("keyword", search);
 				request.setAttribute("option", "users");
 			}catch(SQLException sqle) {
@@ -135,7 +133,7 @@ public class Servlet extends HttpServlet {
 			
 			SearchResult results = gson.fromJson(jsonString, SearchResult.class);
 			String json = gson.toJson(results);
-			session.setAttribute("data", json);
+			request.setAttribute("data", json);
 			request.setAttribute("keyword", search);
 			request.setAttribute("option", "bills");
 			System.out.println("helllllow");

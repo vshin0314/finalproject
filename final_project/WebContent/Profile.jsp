@@ -3,6 +3,40 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script>
+	window.onload = function() {
+		if (!("Notification" in window)) {
+		    alert("This browser does not support system notifications");
+		    // This is not how you would really do things if they aren't supported. :)
+		}
+		// Otherwise, we need to ask the user for permission
+		else if (Notification.permission !== 'denied') {
+		  Notification.requestPermission(function (permission) {
+		    // If the user accepts, let's create a notification
+	
+		  });
+		}
+		if(sessionStorage.getItem("log")!=null){
+			setInterval(checkRequest(), 3000);
+		}else {
+			window.location.redirect("Home.jsp");
+		}
+	}
+	function checkRequest() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
+				"&un=" + sessionStorage.getItem("log"), false);
+		xhttp.send();
+		if(xhttp.responseText.trim().length > 0){
+			alert("hey");
+			let requests = xhttp.responseText.split(",");
+			for(let i=0; i<requests.length; ++i) {
+				var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
+			}
+		}
+		return false;
+	}
+</script>
 <meta charset="UTF-8">
 <title>Profile</title>
 </head>

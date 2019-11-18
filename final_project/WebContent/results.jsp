@@ -78,7 +78,38 @@ padding-left: 10%;
 </body>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
-	let data = <%= session.getAttribute("data") %>;
+	window.onload = function() {
+		if (!("Notification" in window)) {
+		    alert("This browser does not support system notifications");
+		    // This is not how you would really do things if they aren't supported. :)
+		}
+		// Otherwise, we need to ask the user for permission
+		else if (Notification.permission !== 'denied') {
+		  Notification.requestPermission(function (permission) {
+		    // If the user accepts, let's create a notification
+	
+		  });
+		}
+		if(sessionStorage.getItem("log")!=null){
+			setInterval(checkRequest(), 3000);
+		//do something to change based on login
+		}
+	}
+	function checkRequest() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
+				"&un=" + sessionStorage.getItem("log"), false);
+		xhttp.send();
+		if(xhttp.responseText.trim().length > 0){
+			alert("hey");
+			let requests = xhttp.responseText.split(",");
+			for(let i=0; i<requests.length; ++i) {
+				var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
+			}
+		}
+		return false;
+	}
+	let data = <%= request.getAttribute("data") %>;
 	let keyword = "<%=request.getAttribute("keyword") %>";
 	let option = "<%=request.getAttribute("option") %>";
 	/* for(let i=0; i<keyword.length; ++i) {
@@ -93,16 +124,29 @@ padding-left: 10%;
 	/* 	if (data==null || data.results==null || data.results.length<1){
 	    
 	} */
+	
 	$("#results").append("<hr style='border-top: dotted 1px;' />");
 	if(option == "users") {
 		for(let i =0; i<data.users.length; ++i){
-			console.log(data.users[i].Fname);
 			$("#results").append('<table><tr><td rowspan="4">&nbsp</td><td>&nbsp</td></tr>'
 			+'<tr><td>&nbsp<strong>Name: </strong> '+data.users[i].Fname + " " + data.users[i].Lname+'</td></tr>'
 			+'<tr><td>&nbsp<strong>Username: </strong> '+data.users[i].username+'</td></tr>'
 			+'<tr><td>&nbsp<strong>Linkedin: </strong> '+data.users[i].linkedin+'</td></tr></table>'
-			+'<button type="button">Friend Request!</button>'
+			+'<button id="button" type="button">Friend Request!</button>'
 			+"<hr style='border-top: dotted 1px;' />");
+			document.querySelector("#button").onclick = function() {
+				//user not logged in
+				if(sessionStorage.getItem("log") == null) {
+					alert("Please log in");
+				//logged in user
+				}else {
+					var xhttp = new XMLHttpRequest();
+					xhttp.open("GET", "Addfriend?un="+ sessionStorage.getItem("log") +
+							"&friend=" + data.users[i].username, false);
+					xhttp.send();
+				}
+				alert(data.users[i].username);
+			}
 		}
 	}else {
 		var party = [0];

@@ -35,9 +35,7 @@ function validate() {
 	xhttp.open("GET", "login?src=login" +
 			"&un=" + document.login.un.value + 
 			"&pw=" + document.login.pw.value, false);
-	console.log("sending");
 	xhttp.send();
-	console.log("got a message");
 	if(xhttp.responseText.trim().length > 0){
 		alert(xhttp.responseText);
 		return false;
