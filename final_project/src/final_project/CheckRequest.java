@@ -52,6 +52,9 @@ public class CheckRequest extends HttpServlet {
 			}
 			else
 				out.print(requests.substring(0, requests.length()-1));
+			ps = conn.prepareStatement("DELETE FROM RequestQueue WHERE Username=?");
+			ps.setString(1, username);
+			ps.executeUpdate();
 		}catch(SQLException sqle) {
 			sqle.printStackTrace();
 		}catch(Exception e) {
