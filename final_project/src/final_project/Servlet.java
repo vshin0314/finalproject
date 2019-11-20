@@ -2,7 +2,6 @@ package final_project;
 
 
 import java.io.BufferedReader;
-
 import java.io.IOException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -53,14 +51,17 @@ public class Servlet extends HttpServlet {
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String option = (String) request.getParameter("select");
+		HttpSession session = request.getSession();
+		String username = (String) session.getAttribute("username");
 		if(option.equals("users")) {
 			try {
 				search = (String) request.getParameter("search").trim();
 				Class.forName("com.mysql.jdbc.Driver");
 				conn = DriverManager.getConnection(CREDENTIALS_STRING);
-				ps = conn.prepareStatement("SELECT * FROM Users WHERE LOWER(Lname)=? OR LOWER(Fname)=?");
-				ps.setString(1, search.toLowerCase());
+				ps = conn.prepareStatement("SELECT * FROM Users WHERE NOT Username=? AND (LOWER(Lname)=? OR LOWER(Fname)=?)");
+				ps.setString(1, username);
 				ps.setString(2, search.toLowerCase());
+				ps.setString(3, search.toLowerCase());
 				rs = ps.executeQuery();
 				GsonBuilder builder = new GsonBuilder();
 				builder.setPrettyPrinting();
@@ -115,11 +116,11 @@ public class Servlet extends HttpServlet {
 			connection.setRequestMethod("GET");
 			connection.setReadTimeout(15*1000);
 		    connection.connect();
-		    
 		    reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		    stringBuilder = new StringBuilder();
 		    
 		    String line = null;
+		    
 		    while ((line = reader.readLine()) != null)
 		    {
 		    	stringBuilder.append(line + "\n");
@@ -136,8 +137,6 @@ public class Servlet extends HttpServlet {
 			request.setAttribute("data", json);
 			request.setAttribute("keyword", search);
 			request.setAttribute("option", "bills");
-			System.out.println("helllllow");
-			System.out.println(jsonString);
 		}//end else statement		
 		try {
 			RequestDispatcher dispatch = getServletContext().getRequestDispatcher("/results.jsp");

@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class login
@@ -38,6 +39,8 @@ public class login extends HttpServlet {
     	String password = (String) request.getParameter("pw");
     	String next = "";
     	PrintWriter out = response.getWriter();
+    	HttpSession session = request.getSession();
+    	session.setAttribute("username", username);
     	try {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(CREDENTIALS_STRING);
@@ -61,8 +64,7 @@ public class login extends HttpServlet {
 		    		}
 	    		}
 	    		//out.println("hello");
-	    		out.flush();
-	    		out.close();
+	    		
 	    	}else {//coming from register.jsp
 	    		next = "/register.jsp";
 	    		String fname = (String) request.getParameter("fname");
@@ -87,6 +89,8 @@ public class login extends HttpServlet {
 		    		ps.executeUpdate();
 	    		}
 	    	}
+			out.flush();
+    		out.close();
 		}catch(SQLException sqle) {
 			sqle.printStackTrace();
 		}catch(Exception e) {

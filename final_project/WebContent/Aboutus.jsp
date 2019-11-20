@@ -3,6 +3,54 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script>
+window.onload = function() {
+	if (!("Notification" in window)) {
+	    alert("This browser does not support system notifications");
+	    // This is not how you would really do things if they aren't supported. :)
+	}
+	// Otherwise, we need to ask the user for permission
+	else if (Notification.permission !== 'denied') {
+	  Notification.requestPermission(function (permission) {
+	    // If the user accepts, let's create a notification
+
+	  });
+	}
+	if(sessionStorage.getItem("log")!=null){
+		document.getElementById("login").innerHTML = "Logout"
+		document.getElementById("login").onclick = 	function signout(){
+			sessionStorage.removeItem("log");
+			document.getElementById("profile").style.display = "none";
+			document.getElementById("login").innerHTML = "Login"
+			document.getElementById("login").href = "login.jsp";
+			document.getElementById("signup").innerHTML = "Sign Up"
+			document.getElementById("signup").href= "register.jsp";
+		}
+		document.getElementById("profile").style.display = "block";
+		setInterval(checkRequest(), 3000);
+	//do something to change based on login
+	}else {
+		document.getElementById("profile").style.display = "none";
+		document.getElementById("login").innerHTML = "Login";
+		document.getElementById("login").href = "login.jsp";
+		document.getElementById("signup").innerHTML = "Sign Up"
+		document.getElementById("signup").href= "register.jsp";
+	}
+}
+function checkRequest() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
+			"&un=" + sessionStorage.getItem("log"), false);
+	xhttp.send();
+	if(xhttp.responseText.trim().length > 0){
+		let requests = xhttp.responseText.split(",");
+		for(let i=0; i<requests.length; ++i) {
+			var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
+		}
+	}
+	return false;
+}
+</script>
 	<title>About Us</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -80,17 +128,17 @@ text-align: center;
   </button>
      <div class="collapse navbar-collapse" id="navbarnav">
 	    	<ul class="navbar-nav mr-auto">
-	      		<li class="nav-item ">
-		      		<a class = "nav-link" href="Aboutus.jsp">About Us</a>
+	      		<li class="nav-item" >
+		      		<a class = "nav-link" id="about" href="Aboutus.jsp">About Us</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="Profile.jsp">Profile</a>
+		      		<a class = "nav-link" id="profile" href="Profile.jsp">Profile</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="login.jsp">Login</a>
+		      		<a class = "nav-link" id="login"></a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="register.jsp">Sign Up</a>
+		      		<a class = "nav-link" id="signup"></a>
 	      		</li>
 	    	</ul>
 	 </div>

@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Login</title>
+<script>
+</script>
 <style>
 body{
 background-image: url("image/background2.jpg");
@@ -41,7 +43,6 @@ function validate() {
 		return false;
 	}
 	sessionStorage.setItem("log", document.login.un.value);
-	alert(sessionStorage.getItem("log"));
 	return true;
 }
 </script>
@@ -60,10 +61,10 @@ function validate() {
 		      		<a class = "nav-link" href="Aboutus.jsp">About Us</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="Profile.jsp">Profile</a>
+		      		<a class = "nav-link" id="login" href="login.jsp">Login</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="register.jsp">Sign Up</a>
+		      		<a class = "nav-link" id="signup" href="register.jsp">Sign Up</a>
 	      		</li>
 	    	</ul>
 	 </div>

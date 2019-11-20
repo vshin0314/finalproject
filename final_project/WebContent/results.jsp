@@ -5,6 +5,60 @@
 <head>
 <meta charset="UTF-8">
 <title>Search Results</title>
+<script>
+window.onload = function() {
+	if (!("Notification" in window)) {
+	    alert("This browser does not support system notifications");
+	    // This is not how you would really do things if they aren't supported. :)
+	}
+	// Otherwise, we need to ask the user for permission
+	else if (Notification.permission !== 'denied') {
+	  Notification.requestPermission(function (permission) {
+	    // If the user accepts, let's create a notification
+
+	  });
+	}
+	if(sessionStorage.getItem("log")!=null){
+		document.getElementById("login").innerHTML = "Logout"
+		document.getElementById("login").onclick = 	function signout(){
+			sessionStorage.removeItem("log");
+			document.getElementById("profile").style.display = "none";
+			document.getElementById("login").innerHTML = "Login"
+			document.getElementById("login").href = "login.jsp";
+			document.getElementById("signup").innerHTML = "Sign Up"
+			document.getElementById("signup").href= "register.jsp";
+		}
+		document.getElementById("profile").style.display = "block";
+		setInterval(checkRequest(), 3000);
+	//do something to change based on login
+	}else {
+		document.getElementById("profile").style.display = "none";
+		document.getElementById("login").innerHTML = "Login";
+		document.getElementById("login").href = "login.jsp";
+		document.getElementById("signup").innerHTML = "Sign Up"
+		document.getElementById("signup").href= "register.jsp";
+	}
+}
+function checkRequest() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
+			"&un=" + sessionStorage.getItem("log"), false);
+	xhttp.send();
+	if(xhttp.responseText.trim().length > 0){
+		let requests = xhttp.responseText.split(",");
+		for(let i=0; i<requests.length; ++i) {
+			var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
+		}
+	}
+	return false;
+}
+function selectCheck() {
+	if(document.myform.select.value == "selectnon"){
+		alert("Please select option for search!");
+		return false;
+	}
+}
+</script>
 <style>
 body {
    
@@ -46,14 +100,17 @@ padding-left: 10%;
   </button>
      <div class="collapse navbar-collapse" id="navbarnav">
 	    	<ul class="navbar-nav mr-auto">
-	      		<li class="nav-item ">
-		      		<a class = "nav-link" href="Aboutus.jsp">About Us</a>
+	      		<li class="nav-item" >
+		      		<a class = "nav-link" id="about" href="Aboutus.jsp">About Us</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="Profile.jsp">Profile</a>
+		      		<a class = "nav-link" id="profile" href="Profile.jsp">Profile</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="register.jsp">Sign Up</a>
+		      		<a class = "nav-link" id="login"></a>
+	      		</li>
+	      		<li class="nav-item">
+		      		<a class = "nav-link" id="signup"></a>
 	      		</li>
 	    	</ul>
 	 </div>
@@ -62,11 +119,11 @@ padding-left: 10%;
 <h1 id = header>Search Results for: <%=request.getAttribute("keyword") %></h1>
 <br>
 <br>
-<h2 id = "result"></div>
-<form action="Servlet" style="padding-left: 30%;">
- 
+<h2 id = "result"></h2>
+<form name="myform" action="Servlet" onsubmit="return selectCheck()" style="padding-left: 30%;">
+
   <input type="text" style = "width:400px;" class="form-control" id="search" name="search" placeholder = "Search Bills">
-  <select id="select" style= "    width: 150px;height: 40px;" onmouseout="return placeholder()" >
+  <select name="select" style= "width: 150px;height: 40px;" onmouseout="return placeholder()" >
     <option value="selectnon">--SELECT--</option>
     <option value="bills">Bill</option>
     <option value="users">User</option>
@@ -78,40 +135,21 @@ padding-left: 10%;
 </body>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
-	window.onload = function() {
-		if (!("Notification" in window)) {
-		    alert("This browser does not support system notifications");
-		    // This is not how you would really do things if they aren't supported. :)
-		}
-		// Otherwise, we need to ask the user for permission
-		else if (Notification.permission !== 'denied') {
-		  Notification.requestPermission(function (permission) {
-		    // If the user accepts, let's create a notification
-	
-		  });
-		}
-		if(sessionStorage.getItem("log")!=null){
-			setInterval(checkRequest(), 3000);
-		//do something to change based on login
-		}
-	}
-	function checkRequest() {
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
-				"&un=" + sessionStorage.getItem("log"), false);
-		xhttp.send();
-		if(xhttp.responseText.trim().length > 0){
-			alert("hey");
-			let requests = xhttp.responseText.split(",");
-			for(let i=0; i<requests.length; ++i) {
-				var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
-			}
-		}
-		return false;
-	}
 	let data = <%= request.getAttribute("data") %>;
 	let keyword = "<%=request.getAttribute("keyword") %>";
 	let option = "<%=request.getAttribute("option") %>";
+	if(option == "users") {
+		if(data.users.length == 0) {
+			alert("No search result!");
+			window.location.replace("Home.jsp");
+		}
+	}else {
+		if(data.results[0].bills.length == 0) {
+			alert("No search result!");
+			window.location.replace("Home.jsp");
+		}
+	}
+	
 	/* for(let i=0; i<keyword.length; ++i) {
 		if(keyword.charAt(i) == '+')
 			keyword = keyword.replace("+", " ");
@@ -172,7 +210,6 @@ padding-left: 10%;
 			+'<tr><td>&nbsp<strong>Title:</strong> '+data.results[0].bills[i].title+'</td></tr>'
 			+'<tr><td>&nbsp<strong>Name of the Sponser: </strong> '+data.results[0].bills[i].sponsor_name+'</td></tr>'
 			+'<tr><td>&nbsp<strong>Party</strong>: '+party[i]+'</td></tr>'
-		
 			+'<tr><td>&nbsp<strong>Sponsor State:</strong>'+data.results[0].bills[i].sponsor_state+'</td></tr>'
 			+'<tr><td>&nbsp<strong>Summary: </strong>'+summary[i]+'</td></tr></table>'
 			+"<hr style='border-top: dotted 1px;' />");
@@ -183,13 +220,13 @@ padding-left: 10%;
 	%>
 	
 	function placeholder() {
-	   if(document.getElementById("select").value == "bills"){
+	   if(document.myform.select.value == "bills"){
 		   document.getElementById("search").setAttribute("placeholder", "Search Bills with keywords");
 	   }
-	   if(document.getElementById("select").value == "users"){
+	   if(document.myform.select.value == "users"){
 		   document.getElementById("search").setAttribute("placeholder", "Search Users with First Name or Last Name");
-	   
 	   }
 	}
+	
 </script>
 </html>

@@ -4,37 +4,53 @@
 <html>
 <head>
 <script>
-	window.onload = function() {
-		if (!("Notification" in window)) {
-		    alert("This browser does not support system notifications");
-		    // This is not how you would really do things if they aren't supported. :)
-		}
-		// Otherwise, we need to ask the user for permission
-		else if (Notification.permission !== 'denied') {
-		  Notification.requestPermission(function (permission) {
-		    // If the user accepts, let's create a notification
+window.onload = function() {
+	if (!("Notification" in window)) {
+	    alert("This browser does not support system notifications");
+	    // This is not how you would really do things if they aren't supported. :)
+	}
+	// Otherwise, we need to ask the user for permission
+	else if (Notification.permission !== 'denied') {
+	  Notification.requestPermission(function (permission) {
+	    // If the user accepts, let's create a notification
 
-		  });
+	  });
+	}
+	if(sessionStorage.getItem("log")!=null){
+		document.getElementById("login").innerHTML = "Logout"
+		document.getElementById("login").onclick = 	function signout(){
+			sessionStorage.removeItem("log");
+			document.getElementById("profile").style.display = "none";
+			document.getElementById("login").innerHTML = "Login"
+			document.getElementById("login").href = "login.jsp";
+			document.getElementById("signup").innerHTML = "Sign Up"
+			document.getElementById("signup").href= "register.jsp";
 		}
-		if(sessionStorage.getItem("log")!=null){
-			setInterval(checkRequest(), 3000);
-		//do something to change based on login
+		document.getElementById("profile").style.display = "block";
+		setInterval(checkRequest(), 3000);
+	//do something to change based on login
+	}else {
+		document.getElementById("profile").style.display = "none";
+		document.getElementById("login").innerHTML = "Login";
+		document.getElementById("login").href = "login.jsp";
+		document.getElementById("signup").innerHTML = "Sign Up"
+		document.getElementById("signup").href= "register.jsp";
+	}
+}
+function checkRequest() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
+			"&un=" + sessionStorage.getItem("log"), false);
+	xhttp.send();
+	if(xhttp.responseText.trim().length > 0){
+		let requests = xhttp.responseText.split(",");
+		for(let i=0; i<requests.length; ++i) {
+			var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
 		}
 	}
-	function checkRequest() {
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
-				"&un=" + sessionStorage.getItem("log"), false);
-		xhttp.send();
-		if(xhttp.responseText.trim().length > 0){
-			alert("hey");
-			let requests = xhttp.responseText.split(",");
-			for(let i=0; i<requests.length; ++i) {
-				var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
-			}
-		}
-		return false;
-	}
+	return false;
+}
+
 </script>
 <style>
 body {
@@ -77,23 +93,23 @@ margin:0;
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark navbar-bccolor">
-  <a class="navbar-brand" href="Home.jsp">Find My Bills  |</a>
+  <a class="navbar-brand" href="Home.jsp">Find My Bills |</a>
  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarnav" aria-controls="navbarnav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
      <div class="collapse navbar-collapse" id="navbarnav">
 	    	<ul class="navbar-nav mr-auto">
-	      		<li class="nav-item ">
-		      		<a class = "nav-link" href="Aboutus.jsp">About Us</a>
+	      		<li class="nav-item" >
+		      		<a class = "nav-link" id="about" href="Aboutus.jsp">About Us</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="Profile.jsp">Profile</a>
+		      		<a class = "nav-link" id="profile" href="Profile.jsp">Profile</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="login.jsp">Login</a>
+		      		<a class = "nav-link" id="login"></a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="register.jsp">Sign Up</a>
+		      		<a class = "nav-link" id="signup"></a>
 	      		</li>
 	    	</ul>
 	 </div>
@@ -108,8 +124,7 @@ margin:0;
 <br>
 <br>
 <div class="d-flex justify-content-center">
-<form name="myform" action="Servlet" onsubmit="return select()">
- 
+<form name="myform" method="POST" action="Servlet" onsubmit= "return selectCheck()">
 <input type="text" style = "width:400px; margin-top: 20px;" class="form-control" id="search" name="search" placeholder = "Search Bills">
 <select name="select" id="select" style= "width: 150px;margin-top: 20px;height: 40px;" onmouseout="return placeholder()" >
     <option value="selectnon">--SELECT--</option>
@@ -123,22 +138,17 @@ margin:0;
 </div>
 <script>
 function placeholder() {
-   if(document.getElementById("select").value == "bills"){
+   if(document.myform.select.value == "bills"){
 	   document.getElementById("search").setAttribute("placeholder", "Search Bills with keywords");
    }
-   if(document.getElementById("select").value == "users"){
+   if(document.myform.select.value == "users"){
 	   document.getElementById("search").setAttribute("placeholder", "Search Users with First Name or Last Name");
-   
    }
  
 }
-function select(){
-	window.alert("!!!");
-	if(document.getElementById("select").value == "selectnon"){
-		alert("Please select select select the toggle.");
-		return false;
-	}else {
-		alert("!!!");
+function selectCheck(){
+	if(document.myform.select.value == "selectnon"){
+		alert("Please select option for search!.");
 		return false;
 	}
 }

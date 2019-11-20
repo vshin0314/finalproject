@@ -52,14 +52,15 @@ function validate() {
      <div class="collapse navbar-collapse" id="navbarnav">
 	    	<ul class="navbar-nav mr-auto">
 	      		<li class="nav-item ">
-		      		<a class = "nav-link" href="Aboutus.jsp">About Us</a>
+		      		<a class = "nav-link" id="about" href="Aboutus.jsp">About Us</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="Profile.jsp">Profile</a>
+		      		<a class = "nav-link" id="profile" href="Profile.jsp">Profile</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="register.jsp">Sign Up</a>
+		      		<a class = "nav-link" id="login" href="login.jsp">Login</a>
 	      		</li>
+
 	    	</ul>
 	 </div>
 </nav>

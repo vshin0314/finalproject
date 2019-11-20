@@ -19,7 +19,7 @@
 		if(sessionStorage.getItem("log")!=null){
 			setInterval(checkRequest(), 3000);
 		}else {
-			window.location.redirect("Home.jsp");
+			window.location.replace("Home.jsp");
 		}
 	}
 	function checkRequest() {
@@ -28,7 +28,6 @@
 				"&un=" + sessionStorage.getItem("log"), false);
 		xhttp.send();
 		if(xhttp.responseText.trim().length > 0){
-			alert("hey");
 			let requests = xhttp.responseText.split(",");
 			for(let i=0; i<requests.length; ++i) {
 				var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
@@ -43,17 +42,17 @@
 <style>
 .navbar-bccolor{
 	background-color: #2F4F4F;
-
 }
 #profile{
-
-float:left;}
+	float:left;
+}
 
 #image{
+	float:left;
+}
 
-float:left;}
 #search{
-float:left;
+	float:left;
 }
 
 </style>
@@ -69,34 +68,32 @@ float:left;
   </button>
      <div class="collapse navbar-collapse" id="navbarnav">
 	    	<ul class="navbar-nav mr-auto">
+	    	
 	      		<li class="nav-item ">
-		      		<a class = "nav-link" href="Aboutus.jsp">About Us</a>
+		      		<a class = "nav-link" id="about" href="Aboutus.jsp">About Us</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="Profile.jsp">Profile</a>
+		      		<a class = "nav-link" id="profile" href="Profile.jsp">Profile</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" href="register.jsp">Sign Out</a>
+		      		<a class = "nav-link" id="login" href="login.jsp">Login</a>
+	      		</li>
+	      		<li class="nav-item">
+		      		<a class = "nav-link" id="signout" href="register.jsp">Sign Out</a>
 	      		</li>
 	    	</ul>
 	 </div>
 </nav>
 <br>
-	<div class="container">
-		
+	<div class="container">	
 		<div class="row">
 			<img id="profile" src = "image/ken.jpg" style= "width: 20%;"class="rounded-circle">
 			<h1 id = "image" class="col-12 mt-4 mb-4">Ken's Profile</h1>
 			<form action="Servlet">
- 
-<input type="text" style = "width:400px;" class="form-control" id="search" name="search" placeholder = "Search Bills">
-<input type = "submit" value = "Submit" class="btn btn-primary">
-
-</form>
-	
-			
+ 				<input type="text" style = "width:400px;" class="form-control" id="search" name="search" placeholder = "Search Bills">
+				<input type = "submit" value = "Submit" class="btn btn-primary">
+			</form>	
 		</div> 
-		
 	</div> 
 	<br>
 	<br>
@@ -116,10 +113,7 @@ float:left;
 			<i class="fa fa-star" style="font-size:24px;color:blue"></i>
 			A resolution condemning the horrific attack in Dayton, Ohio, and expressing support and prayers for all those impacted by that tragedy.			</p>
 		</div>	
-		
-		
 		<div class="col-12 col-md-5" style="border:dashed; padding:15px; width: 50%;">
-		
 			<h2 style ="color: green;">Ken's Friends</h2>
 			<p>
 			<i class="fa fa-star" style="font-size:24px;color:Orange"></i>
@@ -131,26 +125,21 @@ float:left;
 			</p>
 			<p>			
 			<i class="fa fa-star" style="font-size:24px;color:Orange"></i>
-		Sang Kim</p>
-		<p>			
+			Sang Kim
+			</p>
+			<p>			
 			<i class="fa fa-star" style="font-size:24px;color:Orange"></i>
-		Brian Koo</p>
-		<p>			
+			Brian Koo
+			</p>
+			<p>			
 			<i class="fa fa-star" style="font-size:24px;color:Orange"></i>
-Vicky Yu</p>
-<p>			
+			Vicky Yu
+			</p>
+			<p>			
 			<i class="fa fa-star" style="font-size:24px;color:Orange"></i>
-		Victoria Shin</p>						
+			Victoria Shin</p>						
 		</div>	
 		</div> <!-- .row -->
 	</div> 
-	
-	
-
-
-
-
-
 </body>
-
 </html>
