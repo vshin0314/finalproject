@@ -115,6 +115,9 @@ padding-left: 10%;
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
+<%
+String message = (String) session.getAttribute ("username");
+%>
 <nav class="navbar navbar-expand-md navbar-dark navbar-bccolor">
   <a class="navbar-brand" href="Home.jsp">Home</a>
  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarnav" aria-controls="navbarnav" aria-expanded="false" aria-label="Toggle navigation">
@@ -135,6 +138,9 @@ padding-left: 10%;
 		      		<a class = "nav-link" id="signup"></a>
 	      		</li>
 	    	</ul>
+	    	
+<h2 id = "welcome" style= "color: white;">WELCOME! <%= message %></h2>
+	    
 	 </div>
 </nav>
 <br>
