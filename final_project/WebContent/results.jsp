@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css?family=Slabo+27px&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <title>Search Results</title>
 <script>
@@ -29,7 +31,7 @@ window.onload = function() {
 			document.getElementById("signup").href= "register.jsp";
 		}
 		document.getElementById("profile").style.display = "block";
-		setInterval(checkRequest, 1000);
+		setInterval(checkRequest(), 3000);
 	//do something to change based on login
 	}else {
 		document.getElementById("profile").style.display = "none";
@@ -41,26 +43,50 @@ window.onload = function() {
 }
 function checkRequest() {
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "CheckRequest?src=/results.jsp" +
-			"&un=" + sessionStorage.getItem("log"), true);
+	xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
+			"&un=" + sessionStorage.getItem("log"), false);
 	xhttp.send();
-	xhttp.onreadystatechange = function() {
-		if(xhttp.responseText.trim().length > 0){
-			let requests = xhttp.responseText.split(",");
-			for(let i=0; i<requests.length; ++i) {
-				var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
-			}
+	if(xhttp.responseText.trim().length > 0){
+		let requests = xhttp.responseText.split(",");
+		for(let i=0; i<requests.length; ++i) {
+			var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
 		}
-	};
+	}
 	return false;
+}
+function selectCheck() {
+	if(document.myform.select.value == "selectnon"){
+		alert("Please select option for search!");
+		return false;
+	}
+}
+function toggle(x){
+	x.classList.toggle("fa-thumbs-down");
+	
 }
 </script>
 <style>
+.fa {
+  font-size: 50px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.fa:hover {
+  color: darkblue;
+}
 body {
    
 }
+#text{
+padding-top: 20px;}
 td, tr{
-font-size: 18px;
+font-size: 20px;
+font-family: 'Slabo 27px', serif;
+
+}
+td #text{
+padding-top: 20px;
 }
 #results{
   margin-left: 10%;
@@ -202,12 +228,14 @@ padding-left: 10%;
 			else{
 				summary[i] = data.results[0].bills[i].summary_short;
 			}
-			$("#results").append('<table><tr><td rowspan="4">&nbsp</td><td>&nbsp</td></tr>'
-			+'<tr><td>&nbsp<strong>Title:</strong> '+data.results[0].bills[i].title+'</td></tr>'
-			+'<tr><td>&nbsp<strong>Name of the Sponser: </strong> '+data.results[0].bills[i].sponsor_name+'</td></tr>'
-			+'<tr><td>&nbsp<strong>Party</strong>: '+party[i]+'</td></tr>'
-			+'<tr><td>&nbsp<strong>Sponsor State:</strong>'+data.results[0].bills[i].sponsor_state+'</td></tr>'
-			+'<tr><td>&nbsp<strong>Summary: </strong>'+summary[i]+'</td></tr></table>'
+			$("#results").append('<table><tr><td >&nbsp</td><td>&nbsp</td></tr>'
+			+'<tr><td style="vertical-align: center;">&nbsp<strong style = "padding-bottom:12px;font-size: 30px; color: blue;">Title:</strong> '+data.results[0].bills[i].title+'</td></tr>'
+			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;"> Name of the Sponser: </strong> '+data.results[0].bills[i].sponsor_name+'</td></tr>'
+			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Party:</strong> <div>'+party[i]+'</div></td></tr>'
+			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Sponsor State:</strong>'+data.results[0].bills[i].sponsor_state+'</td></tr>'
+			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Summary: </strong>'+summary[i]+'</td></tr>'+
+			'<tr><td>&nbsp<strong><button onclick = "return favorite()"><i onclick="toggle(this)" style="font-size:36px;"class="fa fa-thumbs-up"></i>Bill</button></td></tr></table>'
+			
 			+"<hr style='border-top: dotted 1px;' />");
 		}
 	}
