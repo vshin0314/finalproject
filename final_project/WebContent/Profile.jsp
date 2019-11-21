@@ -3,60 +3,58 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
-window.onload = function() {
-	if (!("Notification" in window)) {
-	    alert("This browser does not support system notifications");
-	    // This is not how you would really do things if they aren't supported. :)
-	}
-	// Otherwise, we need to ask the user for permission
-	else if (Notification.permission !== 'denied') {
-	  Notification.requestPermission(function (permission) {
-	    // If the user accepts, let's create a notification
-
-	  });
-	}
-	if(sessionStorage.getItem("log")!=null){
-		document.getElementById("login").innerHTML = "Logout"
-		document.getElementById("login").onclick = 	function signout(){
-			sessionStorage.removeItem("log");
-			document.getElementById("profile").style.display = "none";
-			document.getElementById("login").innerHTML = "Login"
-			document.getElementById("login").href = "login.jsp";
-			document.getElementById("signup").innerHTML = "Sign Up"
-			document.getElementById("signup").href= "register.jsp";
+	window.onload = function() {
+		if (!("Notification" in window)) {
+		    alert("This browser does not support system notifications");
+		    // This is not how you would really do things if they aren't supported. :)
 		}
-		document.getElementById("profile").style.display = "block";
-		setInterval(checkRequest, 1000);
-	//do something to change based on login
-	}else {
-		document.getElementById("profile").style.display = "none";
-		document.getElementById("login").innerHTML = "Login";
-		document.getElementById("login").href = "login.jsp";
-		document.getElementById("signup").innerHTML = "Sign Up"
-		document.getElementById("signup").href= "register.jsp";
+		// Otherwise, we need to ask the user for permission
+		else if (Notification.permission !== 'denied') {
+		  Notification.requestPermission(function (permission) {
+		    // If the user accepts, let's create a notification
+	
+		  });
+		}
+		if(sessionStorage.getItem("log")!=null){
+			setInterval(checkRequest(), 3000);
+		}else {
+			window.location.replace("Home.jsp");
+		}
 	}
-}
-function checkRequest() {
-	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "CheckRequest?src=/Profile.jsp" +
-			"&un=" + sessionStorage.getItem("log"), true);
-	xhttp.send();
-	xhttp.onreadystatechange = function() {
+	function checkRequest() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
+				"&un=" + sessionStorage.getItem("log"), false);
+		xhttp.send();
 		if(xhttp.responseText.trim().length > 0){
 			let requests = xhttp.responseText.split(",");
 			for(let i=0; i<requests.length; ++i) {
 				var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
 			}
 		}
-	};
-	return false;
-}
+		return false;
+	}
+	
+	function toggle(x){
+		x.classList.toggle("fa-thumbs-down");
+		
+	}
 </script>
 <meta charset="UTF-8">
 <title>Profile</title>
 </head>
 <style>
+.fa {
+  font-size: 50px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.fa:hover {
+  color: darkblue;
+}
 .navbar-bccolor{
 	background-color: #2F4F4F;
 }
@@ -105,11 +103,9 @@ function checkRequest() {
 	<div class="container">	
 		<div class="row">
 			<img id="profile" src = "image/ken.jpg" style= "width: 20%;"class="rounded-circle">
+			<img id="profile" src = "image/kc.jpg" style= "height: 10%;">
 			<h1 id = "image" class="col-12 mt-4 mb-4">Ken's Profile</h1>
-			<form action="Servlet">
- 				<input type="text" style = "width:400px;" class="form-control" id="search" name="search" placeholder = "Search Bills">
-				<input type = "submit" value = "Submit" class="btn btn-primary">
-			</form>	
+				
 		</div> 
 	</div> 
 	<br>
@@ -133,27 +129,27 @@ function checkRequest() {
 		<div class="col-12 col-md-5" style="border:dashed; padding:15px; width: 50%;">
 			<h2 style ="color: green;">Ken's Friends</h2>
 			<p>
-			<i class="fa fa-star" style="font-size:24px;color:Orange"></i>
+			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
 			Jady Chan
 			</p>
 			<p>
-			<i class="fa fa-star" style="font-size:24px;color:Orange"></i>
-			Buchi Obi
+			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
+			O G
 			</p>
 			<p>			
-			<i class="fa fa-star" style="font-size:24px;color:Orange"></i>
+			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
 			Sang Kim
 			</p>
 			<p>			
-			<i class="fa fa-star" style="font-size:24px;color:Orange"></i>
+			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
 			Brian Koo
 			</p>
 			<p>			
-			<i class="fa fa-star" style="font-size:24px;color:Orange"></i>
+			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
 			Vicky Yu
 			</p>
 			<p>			
-			<i class="fa fa-star" style="font-size:24px;color:Orange"></i>
+			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
 			Victoria Shin</p>						
 		</div>	
 		</div> <!-- .row -->
