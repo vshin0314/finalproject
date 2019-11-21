@@ -75,6 +75,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 
 <body>
+<%
+String message = (String) session.getAttribute ("username");
+%>
+
 
 <nav class="navbar navbar-expand-md navbar-dark navbar-bccolor">
   <a class="navbar-brand" href="Home.jsp">Home</a>
@@ -91,12 +95,11 @@
 		      		<a class = "nav-link" id="profile" href="Profile.jsp">Profile</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" id="login" href="login.jsp">Login</a>
-	      		</li>
-	      		<li class="nav-item">
 		      		<a class = "nav-link" id="signout" href="register.jsp">Sign Out</a>
 	      		</li>
+	      		
 	    	</ul>
+	    	<h2 id = "welcome" style= "color: white;">WELCOME! <%= message %></h2>
 	 </div>
 </nav>
 <br>
@@ -104,7 +107,7 @@
 		<div class="row">
 			<img id="profile" src = "image/ken.jpg" style= "width: 20%;"class="rounded-circle">
 			<img id="profile" src = "image/kc.jpg" style= "height: 10%;">
-			<h1 id = "image" class="col-12 mt-4 mb-4">Ken's Profile</h1>
+			<h1 id = "image" class="col-12 mt-4 mb-4"><%= message %>'s Profile</h1>
 				
 		</div> 
 	</div> 
@@ -114,7 +117,7 @@
 	
 		<div class="row">
 		<div class="col-12 col-md-6" style="border:dashed; padding:15px; width: 50%;">
-			<h2 style ="color: green;">Ken's Favorite Bills</h2>
+			<h2 style ="color: green;"><%= message %>'s Favorite Bills</h2>
 			<p>
 			<i class="fa fa-star" style="font-size:24px;color:blue"></i>
 			Making appropriations for the Departments of Commerce and Justice, Science, and Related Agencies for the fiscal year ending September 30, 2020, and for other purposes.
@@ -127,7 +130,7 @@
 			A resolution condemning the horrific attack in Dayton, Ohio, and expressing support and prayers for all those impacted by that tragedy.			</p>
 		</div>	
 		<div class="col-12 col-md-5" style="border:dashed; padding:15px; width: 50%;">
-			<h2 style ="color: green;">Ken's Friends</h2>
+			<h2 style ="color: green;"><%= message %>'s Friends</h2>
 			<p>
 			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
 			Jady Chan
