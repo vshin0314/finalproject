@@ -56,12 +56,6 @@ public class Addfriend extends HttpServlet {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
-			try {
-				rs.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		try {
 			RequestDispatcher dispatch = getServletContext().getRequestDispatcher("/results.jsp");
