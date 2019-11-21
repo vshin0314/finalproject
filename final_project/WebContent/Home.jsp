@@ -27,7 +27,7 @@ window.onload = function() {
 			document.getElementById("signup").href= "register.jsp";
 		}
 		document.getElementById("profile").style.display = "block";
-		setInterval(checkRequest(), 1000);
+		setInterval(checkRequest, 1000);
 	//do something to change based on login
 	}else {
 		document.getElementById("profile").style.display = "none";
@@ -40,14 +40,16 @@ window.onload = function() {
 function checkRequest() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
-			"&un=" + sessionStorage.getItem("log"), false);
+			"&un=" + sessionStorage.getItem("log"), true);
 	xhttp.send();
-	if(xhttp.responseText.trim().length > 0){
-		let requests = xhttp.responseText.split(",");
-		for(let i=0; i<requests.length; ++i) {
-			var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
+	xhttp.onreadystatechange = function() {
+		if(xhttp.responseText.trim().length > 0){
+			let requests = xhttp.responseText.split(",");
+			for(let i=0; i<requests.length; ++i) {
+				var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
+			}
 		}
-	}
+	};
 	return false;
 }
 
