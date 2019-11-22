@@ -5,42 +5,59 @@
 <head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
-	window.onload = function() {
-		if (!("Notification" in window)) {
-		    alert("This browser does not support system notifications");
-		    // This is not how you would really do things if they aren't supported. :)
-		}
-		// Otherwise, we need to ask the user for permission
-		else if (Notification.permission !== 'denied') {
-		  Notification.requestPermission(function (permission) {
-		    // If the user accepts, let's create a notification
-	
-		  });
-		}
-		if(sessionStorage.getItem("log")!=null){
-			setInterval(checkRequest(), 3000);
-		}else {
-			window.location.replace("Home.jsp");
-		}
+window.onload = function() {
+	if (!("Notification" in window)) {
+	    alert("This browser does not support system notifications");
+	    // This is not how you would really do things if they aren't supported. :)
 	}
-	function checkRequest() {
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
-				"&un=" + sessionStorage.getItem("log"), false);
-		xhttp.send();
+	// Otherwise, we need to ask the user for permission
+	else if (Notification.permission !== 'denied') {
+	  Notification.requestPermission(function (permission) {
+	    // If the user accepts, let's create a notification
+
+	  });
+	}
+	if(sessionStorage.getItem("log")!=null){
+		document.getElementById("login").innerHTML = "Logout"
+		document.getElementById("login").onclick = 	function signout(){
+			sessionStorage.removeItem("log");
+			document.getElementById("profile").style.display = "none";
+			document.getElementById("login").innerHTML = "Login"
+			document.getElementById("login").href = "login.jsp";
+			document.getElementById("signup").innerHTML = "Sign Up"
+			document.getElementById("signup").href= "register.jsp";
+		}
+		document.getElementById("profile").style.display = "block";
+		//setInterval(checkRequest, 1000);
+	//do something to change based on login
+	}else {
+		document.getElementById("profile").style.display = "none";
+		document.getElementById("login").innerHTML = "Login";
+		document.getElementById("login").href = "login.jsp";
+		document.getElementById("signup").innerHTML = "Sign Up"
+		document.getElementById("signup").href= "register.jsp";
+	}
+}
+function checkRequest() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
+			"&un=" + sessionStorage.getItem("log"), true);
+	xhttp.send();
+	xhttp.onreadystatechange = function() {
 		if(xhttp.responseText.trim().length > 0){
 			let requests = xhttp.responseText.split(",");
 			for(let i=0; i<requests.length; ++i) {
 				var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
 			}
 		}
-		return false;
-	}
+	};
+	return false;
+}
 	
-	function toggle(x){
-		x.classList.toggle("fa-thumbs-down");
-		
-	}
+function toggle(x){
+	x.classList.toggle("fa-thumbs-down");
+	
+}
 </script>
 <meta charset="UTF-8">
 <title>Profile</title>
@@ -51,7 +68,6 @@
   cursor: pointer;
   user-select: none;
 }
-
 .fa:hover {
   color: darkblue;
 }
@@ -61,15 +77,12 @@
 #profile{
 	float:left;
 }
-
 #image{
 	float:left;
 }
-
 #search{
 	float:left;
 }
-
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">

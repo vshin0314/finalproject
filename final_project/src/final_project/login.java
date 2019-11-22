@@ -39,7 +39,7 @@ public class login extends HttpServlet {
     	String password = (String) request.getParameter("pw");
     	String next = "";
     	PrintWriter out = response.getWriter();
-    	HttpSession session = request.getSession();
+       	HttpSession session = request.getSession();
     	session.setAttribute("username", username);
     	try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -89,21 +89,23 @@ public class login extends HttpServlet {
 		    		ps.executeUpdate();
 	    		}
 	    	}
-			out.flush();
-    		out.close();
+			
 		}catch(SQLException sqle) {
 			sqle.printStackTrace();
 		}catch(Exception e) {
 			e.printStackTrace();
+		}
+    	try {
+    		out.flush();
+			out.close();
+			RequestDispatcher dispatch = getServletContext().getRequestDispatcher(next);
+			dispatch.forward(request, response);
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch(ServletException e) {
+			e.printStackTrace();
 		}finally {
-			try {
-				RequestDispatcher dispatch = getServletContext().getRequestDispatcher(next);
-				dispatch.forward(request, response);
-			} catch(IOException e) {
-				e.printStackTrace();
-			} catch(ServletException e) {
-				e.printStackTrace();
-			}
+			
 		}
     	
     }

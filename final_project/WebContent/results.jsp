@@ -31,7 +31,7 @@ window.onload = function() {
 			document.getElementById("signup").href= "register.jsp";
 		}
 		document.getElementById("profile").style.display = "block";
-		setInterval(checkRequest(), 3000);
+		//setInterval(checkRequest, 1000);
 	//do something to change based on login
 	}else {
 		document.getElementById("profile").style.display = "none";
@@ -44,14 +44,16 @@ window.onload = function() {
 function checkRequest() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("GET", "CheckRequest?src=/Home.jsp" +
-			"&un=" + sessionStorage.getItem("log"), false);
+			"&un=" + sessionStorage.getItem("log"), true);
 	xhttp.send();
-	if(xhttp.responseText.trim().length > 0){
-		let requests = xhttp.responseText.split(",");
-		for(let i=0; i<requests.length; ++i) {
-			var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
+	xhttp.onreadystatechange = function() {
+		if(xhttp.responseText.trim().length > 0){
+			let requests = xhttp.responseText.split(",");
+			for(let i=0; i<requests.length; ++i) {
+				var notification = new Notification("Friend Request!", {body: requests[i] + " has sent you a friend request!"});
+			}
 		}
-	}
+	};
 	return false;
 }
 function selectCheck() {
@@ -60,10 +62,6 @@ function selectCheck() {
 		return false;
 	}
 }
-function toggle(x){
-	x.classList.toggle("fa-thumbs-down");
-	
-}
 </script>
 <style>
 .fa {
@@ -71,7 +69,6 @@ function toggle(x){
   cursor: pointer;
   user-select: none;
 }
-
 .fa:hover {
   color: darkblue;
 }
@@ -83,7 +80,6 @@ padding-top: 20px;}
 td, tr{
 font-size: 20px;
 font-family: 'Slabo 27px', serif;
-
 }
 td #text{
 padding-top: 20px;
@@ -178,18 +174,6 @@ String message = (String) session.getAttribute ("username");
 		}
 	}
 	
-	/* for(let i=0; i<keyword.length; ++i) {
-		if(keyword.charAt(i) == '+')
-			keyword = keyword.replace("+", " ");
-	} */
-	//var keyword2 = keyword.replace("+", key)
-	//document.getElementById.innerHTML = ("Search Results for: ");
-	//let data = JSON.parse(temp);
-	//window.alert(JSON.parse(data));
-		
-	/* 	if (data==null || data.results==null || data.results.length<1){
-	    
-	} */
 	
 	$("#results").append("<hr style='border-top: dotted 1px;' />");
 	if(option == "users") {
@@ -211,7 +195,6 @@ String message = (String) session.getAttribute ("username");
 							"&friend=" + data.users[i].username, false);
 					xhttp.send();
 				}
-				alert(data.users[i].username);
 			}
 		}
 	}else {
@@ -219,6 +202,7 @@ String message = (String) session.getAttribute ("username");
 		var imgArray = new Array();
 		var newimg = document.createElement("img"); 
 		var summary = [0];
+		var buttons = [0];
 		for(i=0; i<data.results[0].bills.length; i++) {
 			imgArray[i] = new Image();
 			if(data.results[0].bills[i].sponsor_party == "D"){
@@ -240,9 +224,53 @@ String message = (String) session.getAttribute ("username");
 			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Party:</strong> <div>'+party[i]+'</div></td></tr>'
 			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Sponsor State:</strong>'+data.results[0].bills[i].sponsor_state+'</td></tr>'
 			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Summary: </strong>'+summary[i]+'</td></tr>'+
-			'<tr><td>&nbsp<strong><button onclick = "return favorite()"><i onclick="toggle(this)" style="font-size:36px;"class="fa fa-thumbs-up"></i>Bill</button></td></tr></table>'
+			'<tr><td>&nbsp<strong><button id= "button'+ i.toString() +'" value="' + data.results[0].bills[i].bill_id +'">Follow</button></td></tr></table>'
 			
 			+"<hr style='border-top: dotted 1px;' />");
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "FollowCheck?src=/results.jsp" +
+					"&un=" + sessionStorage.getItem("log") +
+					"&billid=" +  data.results[0].bills[i].bill_id, false);
+			xhr.send();
+			//already following
+			console.log(xhr.responseText);
+			if(xhr.responseText == "true") {
+				document.querySelector("#button"+i.toString()).style = "font-size:36px;";
+				document.querySelector("#button"+i.toString()).setAttribute("class", "fa fa-thumbs-down");
+				document.querySelector("#button"+i.toString()).onclick = function() {
+					if(sessionStorage.getItem("log") == null) {
+						alert("Please Sign in!");
+					}else {
+						alert(this.getAttribute("value"));
+						this.setAttribute("class", "fa fa-thumbs-up");
+						var xhttp = new XMLHttpRequest();
+						xhttp.open("GET", "Follow?src=/results.jsp" +
+								"&follow=true" +
+								"&un=" + sessionStorage.getItem("log") +
+								"&billid=" +  this.getAttribute("value"), true);
+						xhttp.send(); 
+					}
+				}
+			//not following
+			}else {
+				document.querySelector("#button"+i.toString()).style = "font-size:36px;";
+				document.querySelector("#button"+i.toString()).setAttribute("class", "fa fa-thumbs-up");
+				document.querySelector("#button"+i.toString()).onclick = function() {
+					if(sessionStorage.getItem("log") == null) {
+						alert("Please Sign in!");
+					}else {
+						alert(this.getAttribute("value"));
+						this.setAttribute("class", "fa fa-thumbs-down");
+						var xhttp = new XMLHttpRequest();
+						xhttp.open("GET", "Follow?src=/results.jsp" +
+								"&follow=false" +
+								"&un=" + sessionStorage.getItem("log") +
+								"&billid=" +  this.getAttribute("value"), true);
+						xhttp.send(); 
+					}
+				}
+			}
+			
 		}
 	}
 	<%
