@@ -49,7 +49,6 @@ public class FollowCheck extends HttpServlet {
 			ps.setString(2, billid);	
 			rs = ps.executeQuery();
 			if(rs.next()) {
-				System.out.println("its in here");
 				out.print("true");
 			}else {
 				out.print("false");

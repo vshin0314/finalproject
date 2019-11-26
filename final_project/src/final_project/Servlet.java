@@ -75,7 +75,6 @@ public class Servlet extends HttpServlet {
 					user.Lname = rs.getString("Lname");
 					user.username = rs.getString("Username");
 					user.linkedin = rs.getString("linkedin");
-					System.out.println(rs.getString("linkedin"));
 					temp.add(user);
 					++c;
 				}
