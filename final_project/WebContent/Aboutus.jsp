@@ -27,7 +27,7 @@ window.onload = function() {
 			document.getElementById("signup").href= "register.jsp";
 		}
 		document.getElementById("profile").style.display = "block";
-		setInterval(checkRequest, 1000);
+		//setInterval(checkRequest, 1000);
 	//do something to change based on login
 	}else {
 		document.getElementById("profile").style.display = "none";

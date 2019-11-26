@@ -19,23 +19,20 @@ window.onload = function() {
 	}
 	if(sessionStorage.getItem("log")!=null){
 		document.getElementById("login").innerHTML = "Logout"
-		document.getElementById("login").onclick = 	function signout(){
+		document.getElementById("login").onclick = function signout(){
 			sessionStorage.removeItem("log");
-			document.getElementById("profile").style.display = "none";
-			document.getElementById("login").innerHTML = "Login"
-			document.getElementById("login").href = "login.jsp";
-			document.getElementById("signup").innerHTML = "Sign Up"
-			document.getElementById("signup").href= "register.jsp";
 		}
 		document.getElementById("profile").style.display = "block";
+		document.getElementById("welcome").innerHTML = "WELCOME! " + sessionStorage.getItem("log");
+		document.getElementById("image").innerHTML = sessionStorage.getItem("log") + "'s Profile";
+		document.getElementById("favbill").innerHTML = sessionStorage.getItem("log") + "'s Following Bills";
+		document.getElementById("friends").innerHTML = sessionStorage.getItem("log") + "'s Friends";
+	 	
 		//setInterval(checkRequest, 1000);
 	//do something to change based on login
 	}else {
-		document.getElementById("profile").style.display = "none";
-		document.getElementById("login").innerHTML = "Login";
-		document.getElementById("login").href = "login.jsp";
-		document.getElementById("signup").innerHTML = "Sign Up"
-		document.getElementById("signup").href= "register.jsp";
+		alert("Please Login!");
+		window.location.replace("login.jsp");
 	}
 }
 function checkRequest() {
@@ -88,10 +85,6 @@ function toggle(x){
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 
 <body>
-<%
-String message = (String) session.getAttribute ("username");
-%>
-
 
 <nav class="navbar navbar-expand-md navbar-dark navbar-bccolor">
   <a class="navbar-brand" href="Home.jsp">Home</a>
@@ -108,20 +101,18 @@ String message = (String) session.getAttribute ("username");
 		      		<a class = "nav-link" id="profile" href="Profile.jsp">Profile</a>
 	      		</li>
 	      		<li class="nav-item">
-		      		<a class = "nav-link" id="signout" href="register.jsp">Sign Out</a>
+		      		<a class = "nav-link" id="login" href="login.jsp">Sign Out</a>
 	      		</li>
 	      		
 	    	</ul>
-	    	<h2 id = "welcome" style= "color: white;">WELCOME! <%= message %></h2>
+	    	<h2 id = "welcome" style= "color: white;"> </h2>
 	 </div>
 </nav>
 <br>
 	<div class="container">	
 		<div class="row">
 			<img id="profile" src = "image/ken.jpg" style= "width: 20%;"class="rounded-circle">
-			<img id="profile" src = "image/kc.jpg" style= "height: 10%;">
-			<h1 id = "image" class="col-12 mt-4 mb-4"><%= message %>'s Profile</h1>
-				
+			<h1 id = "image" class="col-12 mt-4 mb-4"></h1>
 		</div> 
 	</div> 
 	<br>
@@ -129,46 +120,129 @@ String message = (String) session.getAttribute ("username");
 	<div class="container" >
 	
 		<div class="row">
-		<div class="col-12 col-md-6" style="border:dashed; padding:15px; width: 50%;">
-			<h2 style ="color: green;"><%= message %>'s Favorite Bills</h2>
-			<p>
-			<i class="fa fa-star" style="font-size:24px;color:blue"></i>
-			Making appropriations for the Departments of Commerce and Justice, Science, and Related Agencies for the fiscal year ending September 30, 2020, and for other purposes.
-			</p>
-			<p>
-			<i class="fa fa-star-o" style="font-size:24px;color:blue"></i>
-			Commending the performance of the Special Operations Forces and a military working dog in the eradication of the terrorist leader of the Islamic State of Iraq and Syria.			</p>
-			<p>
-			<i class="fa fa-star" style="font-size:24px;color:blue"></i>
-			A resolution condemning the horrific attack in Dayton, Ohio, and expressing support and prayers for all those impacted by that tragedy.			</p>
+		<div class="col-12 col-md-6" style="border:dashed; padding:15px; width: 33%;">
+			<h2 id="favbill" style ="color: green;"></h2>
+				<table id="favBills"></table>
 		</div>	
-		<div class="col-12 col-md-5" style="border:dashed; padding:15px; width: 50%;">
-			<h2 style ="color: green;"><%= message %>'s Friends</h2>
-			<p>
-			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
-			Jady Chan
-			</p>
-			<p>
-			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
-			O G
-			</p>
-			<p>			
-			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
-			Sang Kim
-			</p>
-			<p>			
-			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
-			Brian Koo
-			</p>
-			<p>			
-			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
-			Vicky Yu
-			</p>
-			<p>			
-			<i onclick="toggle(this)" style="font-size:24px;"class="fa fa-thumbs-up"></i>
-			Victoria Shin</p>						
+		<div class="col-12 col-md-5" style="border:dashed; padding:15px; width: 33%;">
+			<h2 id="friends"style ="color: green;"></h2>
+				<table id="friendsTable"></table>						
+		</div>
+		<div class="col-12 col-md-6" style="border:dashed; padding:15px; width: 33%;">
+			<table id="requestsTable"></table>
 		</div>	
 		</div> <!-- .row -->
 	</div> 
 </body>
+<script>
+let xhttp = new XMLHttpRequest();
+xhttp.open("GET", "Profile?acn=follow" +
+		"&un=" + sessionStorage.getItem("log"), false);
+xhttp.send();
+if(xhttp.responseText.length > 0) {
+	let idresults = xhttp.responseText.toString().split(",");
+	let favbills = document.querySelector("#favBills");
+	for(var i=0; i<idresults.length; ++i) {
+		let xhr = new XMLHttpRequest();
+		xhr.open("GET", "Detail?billid=" + idresults[i], false);
+		xhr.send();
+		let billresult = JSON.parse(xhr.responseText);
+		let billRow = document.createElement("tr");
+		let billContent = document.createElement("td");
+		let buttonWrapper = document.createElement("td");
+		let button =document.createElement("i");
+		button.setAttribute("class", "fa fa-star");
+		button.style.fontSize = "24px";
+		button.style.color = "blue";
+		buttonWrapper.appendChild(button);
+		let billtitle = document.createElement("p");
+		billtitle.innerHTML = billresult.results[0].title;
+		billContent.appendChild(billtitle);
+		billRow.appendChild(buttonWrapper);
+		billRow.appendChild(billContent);
+		favbills.appendChild(billRow); 
+	}
+}
+xhttp.open("GET", "Profile?acn=friends" +
+		"&un=" + sessionStorage.getItem("log"), false);
+xhttp.send();
+if(xhttp.responseText.length > 0) {
+	let friendresults = xhttp.responseText.toString().split(",");
+	let friends = document.querySelector("#friendsTable");
+	for(var i=0; i<friendresults.length; ++i) {
+		console.log(friendresults[i]);
+		let friendRow = document.createElement("tr");
+		let friendContent = document.createElement("td");
+		let buttonWrapper = document.createElement("td");
+		let button = document.createElement("i");
+		button.setAttribute("class", "fa fa-thumbs-up");
+		button.style.fontSize = "24px";
+		button.onclick = function() {
+			xhr = new XMLHttpRequest();
+			xhr.open("GET", "Addfriend?src=/Profile.jsp" +
+					"&un="+ sessionStorage.getItem("log") +
+					"&friend=" + friendresults[i] +
+					"&action=delete", false);
+			xhr.send();
+		}
+		buttonWrapper.appendChild(button);
+		let friendname = document.createElement("p");
+		friendname.innerHTML = friendresults[i];
+		friendContent.appendChild(friendname);
+		friendRow.appendChild(buttonWrapper);
+		friendRow.appendChild(friendContent);
+		friends.appendChild(friendRow);
+	}
+}
+
+xhttp.open("GET", "Profile?acn=friendrequests" +
+		"&un=" + sessionStorage.getItem("log"), false);
+xhttp.send();
+if(xhttp.responseText.length > 0) {
+	let requestresults = xhttp.responseText.toString().split(",");
+	let requests = document.querySelector("#requestsTable");
+	for(var i=0; i<requestresults.length; ++i) {
+		let requestRow = document.createElement("tr");
+		let requestContent = document.createElement("td");
+		let buttonWrapper = document.createElement("td");
+		let check = document.createElement("i");
+		check.value = requestresults[i];
+		check.setAttribute("class", "fa fa-check");
+		check.style.fontSize = "24px";
+		check.onclick = function() {
+			alert(this.value + " is now your friend!");
+			xhr = new XMLHttpRequest();
+			xhr.open("GET", "Addfriend?src=/Profile.jsp" +
+					"&un="+ sessionStorage.getItem("log") +
+					"&friend=" + this.value  +
+					"&action=accept", false);
+			xhr.send();
+			location.reload();
+		}
+		let close = document.createElement("i");
+		close.value = requestresults[i];
+		close.setAttribute("class", "fa fa-close");
+		close.style.fontSize = "24px";
+		close.onclick = function() {
+			alert("You deleted " + this.value + "'s friend request!");
+			xhr = new XMLHttpRequest();
+			xhr.open("GET", "Addfriend?src=/Profile.jsp" +
+					"&un="+ sessionStorage.getItem("log") +
+					"&friend=" + this.value  +
+					"&action=delete", false);
+			xhr.send();
+			location.reload();
+		}
+		buttonWrapper.appendChild(check);
+		buttonWrapper.appendChild(close);
+		let request = document.createElement("p");
+		request.innerHTML = requestresults[i];
+		requestContent.appendChild(request);
+		requestRow.appendChild(buttonWrapper);
+		requestRow.appendChild(requestContent);
+		requests.appendChild(requestRow);
+	}
+}
+ 
+</script>
 </html>

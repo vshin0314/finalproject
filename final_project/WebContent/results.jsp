@@ -190,9 +190,12 @@ String message = (String) session.getAttribute ("username");
 					alert("Please log in");
 				//logged in user
 				}else {
+					alert("Successfully sent a friend request to " + data.users[i].username + "!");
 					var xhttp = new XMLHttpRequest();
-					xhttp.open("GET", "Addfriend?un="+ sessionStorage.getItem("log") +
-							"&friend=" + data.users[i].username, false);
+					xhttp.open("GET", "Addfriend?src=/results.jsp" +
+							"&un="+ sessionStorage.getItem("log") +
+							"&friend=" + data.users[i].username +
+							"&action=add", false);
 					xhttp.send();
 				}
 			}
@@ -223,17 +226,20 @@ String message = (String) session.getAttribute ("username");
 			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;"> Name of the Sponser: </strong> '+data.results[0].bills[i].sponsor_name+'</td></tr>'
 			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Party:</strong> <div>'+party[i]+'</div></td></tr>'
 			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Sponsor State:</strong>'+data.results[0].bills[i].sponsor_state+'</td></tr>'
-			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Summary: </strong>'+summary[i]+'</td></tr>'+
-			'<tr><td>&nbsp<strong><button id= "button'+ i.toString() +'" value="' + data.results[0].bills[i].bill_id +'">Follow</button></td></tr></table>'
-			
+			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Summary: </strong>'+summary[i]+'</td></tr>'
+			+'<tr><td>&nbsp<strong><button id= "button'+ i.toString() +'" value="' + data.results[0].bills[i].bill_id +'">Follow</button>' 
+			+'<tr><td>&nbsp<strong><button id= "detail'+ i.toString() +'" value="' + data.results[0].bills[i].bill_id +'">Details</button></td></tr></table>'
 			+"<hr style='border-top: dotted 1px;' />");
+			//document.querySelector("#button"+i.toString()).href = "Details.jsp"
+			document.querySelector("#detail"+i.toString()).onclick = function () {
+				alert(this.value);
+			}
 			var xhr = new XMLHttpRequest();
 			xhr.open("GET", "FollowCheck?src=/results.jsp" +
 					"&un=" + sessionStorage.getItem("log") +
 					"&billid=" +  data.results[0].bills[i].bill_id, false);
 			xhr.send();
 			//already following
-			console.log(xhr.responseText);
 			if(xhr.responseText == "true") {
 				document.querySelector("#button"+i.toString()).style = "font-size:36px;";
 				document.querySelector("#button"+i.toString()).setAttribute("class", "fa fa-thumbs-down");
@@ -259,7 +265,7 @@ String message = (String) session.getAttribute ("username");
 					if(sessionStorage.getItem("log") == null) {
 						alert("Please Sign in!");
 					}else {
-						alert(this.getAttribute("value"));
+						alert("You are now following bill " + this.getAttribute("value") + "!");
 						this.setAttribute("class", "fa fa-thumbs-down");
 						var xhttp = new XMLHttpRequest();
 						xhttp.open("GET", "Follow?src=/results.jsp" +

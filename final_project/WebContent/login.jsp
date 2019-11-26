@@ -87,7 +87,6 @@ function validate() {
   <input type="hidden" name="src" value="login">
 				<label for="title-id" class="col-sm-2 col-form-label text-sm-right" style="color: white;">Username: </label>
 				<div class="col-sm-7">
-
 					  <input type="text" style = "font-size: 22px;"  name ="un" placeholder="Enter Username">
 					  <span style  = "color: red;"> ${unError}</span>
 					  <br>				

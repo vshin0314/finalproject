@@ -29,6 +29,7 @@ window.onload = function() {
 		document.getElementById("profile").style.display = "block";
 		//setInterval(checkRequest, 1000);
 	//do something to change based on login
+	
 	}else {
 		document.getElementById("profile").style.display = "none";
 		document.getElementById("login").innerHTML = "Login";
@@ -135,6 +136,7 @@ margin:0;
     
   </select>
 <input type = "submit" value = "Submit" class="btn btn-primary">
+
 
 </form>
 </div>
