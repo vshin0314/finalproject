@@ -85,11 +85,11 @@ public class Profile extends HttpServlet {
 		    		ps.setInt(4, 0);
 		    		rs = ps.executeQuery();
 		    		if(rs.next()) {
-		    			friendname = rs.getString("actionUser") + ", ";
+		    			friendname = rs.getString("actionUser") + ",";
 		    			while(rs.next()) {
-		    				friendname = friendname + rs.getString("actionUser") + ", ";
+		    				friendname = friendname + rs.getString("actionUser") + ",";
 		    			}
-		    			friendname = friendname.substring(0, friendname.length()-2);
+		    			friendname = friendname.substring(0, friendname.length()-1);
 		    		}
 	    		}
 	    		out.print(friendname);

@@ -175,15 +175,18 @@ if(xhttp.responseText.length > 0) {
 		let friendContent = document.createElement("td");
 		let buttonWrapper = document.createElement("td");
 		let button = document.createElement("i");
-		button.setAttribute("class", "fa fa-thumbs-up");
+		button.setAttribute("class", "fa fa-close");
 		button.style.fontSize = "24px";
+		button.value = friendresults[i];
 		button.onclick = function() {
+			alert(this.value + " is no longer your friend!")
 			xhr = new XMLHttpRequest();
 			xhr.open("GET", "Addfriend?src=/Profile.jsp" +
 					"&un="+ sessionStorage.getItem("log") +
-					"&friend=" + friendresults[i] +
+					"&friend=" + this.value +
 					"&action=delete", false);
 			xhr.send();
+			location.reload();
 		}
 		buttonWrapper.appendChild(button);
 		let friendname = document.createElement("p");
