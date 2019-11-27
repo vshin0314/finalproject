@@ -17,7 +17,6 @@ window.onload = function() {
 	else if (Notification.permission !== 'denied') {
 	  Notification.requestPermission(function (permission) {
 	    // If the user accepts, let's create a notification
-
 	  });
 	}
 	if(sessionStorage.getItem("log")!=null){
@@ -75,15 +74,7 @@ function selectCheck() {
 body {
    
 }
-#text{
-padding-top: 20px;}
-td, tr{
-font-size: 20px;
-font-family: 'Slabo 27px', serif;
-}
-td #text{
-padding-top: 20px;
-}
+
 #results{
   margin-left: 10%;
   margin-right: 10%;
@@ -92,12 +83,7 @@ padding-top: 20px;
 .navbar-bccolor{
 	background-color: #2F4F4F;
 }
-.form-control{
-margin-top: 7px;}
-td{
-  display: flex;
-  float: left;
-}
+
 #search{
 float:left;
 }
@@ -135,7 +121,7 @@ String message = (String) session.getAttribute ("username");
 	      		</li>
 	    	</ul>
 	    	
-<h2 id = "welcome" style= "color: white;">WELCOME! <%= message %></h2>
+<h2 id = "welcome" style= "color: white;">Welcome <%= message %>!</h2>
 	    
 	 </div>
 </nav>
@@ -155,6 +141,24 @@ String message = (String) session.getAttribute ("username");
   </select>
 <input type = "submit" value = "Submit" class="btn btn-primary">
 </form>
+<div class="container">
+<table class="table">
+    <thead>
+      <tr>
+        <th>Follow</th>
+        <th>Title</th>
+        <th>Sponsor</th>
+        <th>Party</th>
+        <th>State</th>
+        
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+   
+    </tbody>
+</table>
+</div>
 <div id="results"></div>
 </body>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -178,6 +182,9 @@ String message = (String) session.getAttribute ("username");
 	$("#results").append("<hr style='border-top: dotted 1px;' />");
 	if(option == "users") {
 		for(let i =0; i<data.users.length; ++i){
+			
+			
+			
 			$("#results").append('<table><tr><td rowspan="4">&nbsp</td><td>&nbsp</td></tr>'
 			+'<tr><td>&nbsp<strong>Name: </strong> '+data.users[i].Fname + " " + data.users[i].Lname+'</td></tr>'
 			+'<tr><td>&nbsp<strong>Username: </strong> '+data.users[i].username+'</td></tr>'
@@ -206,6 +213,10 @@ String message = (String) session.getAttribute ("username");
 		var newimg = document.createElement("img"); 
 		var summary = [0];
 		var buttons = [0];
+		let tbodyElement = document.querySelector("tbody");
+		while( tbodyElement.hasChildNodes()){
+			tbodyElement.removeChild(tbodyElement.lastChild);
+		}
 		for(i=0; i<data.results[0].bills.length; i++) {
 			imgArray[i] = new Image();
 			if(data.results[0].bills[i].sponsor_party == "D"){
@@ -221,16 +232,48 @@ String message = (String) session.getAttribute ("username");
 			else{
 				summary[i] = data.results[0].bills[i].summary_short;
 			}
-			$("#results").append('<table><tr><td >&nbsp</td><td>&nbsp</td></tr>'
-			+'<tr><td style="vertical-align: center;">&nbsp<strong style = "padding-bottom:12px;font-size: 30px; color: blue;">Title:</strong> '+data.results[0].bills[i].title+'</td></tr>'
-			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;"> Name of the Sponser: </strong> '+data.results[0].bills[i].sponsor_name+'</td></tr>'
-			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Party:</strong> <div>'+party[i]+'</div></td></tr>'
-			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Sponsor State:</strong>'+data.results[0].bills[i].sponsor_state+'</td></tr>'
-			+'<tr><td>&nbsp<strong style = "font-size: 30px; color: blue;">Summary: </strong>'+summary[i]+'</td></tr>'
-			+'<tr><td>&nbsp<strong><button id= "button'+ i.toString() +'" value="' + data.results[0].bills[i].bill_id +'">Follow</button>' 
-			+'<tr><td>&nbsp<strong><button id= "detail'+ i.toString() +'" value="' + data.results[0].bills[i].bill_id +'">Details</button></td></tr></table>'
-			+"<hr style='border-top: dotted 1px;' />");
-			//document.querySelector("#button"+i.toString()).href = "Details.jsp"
+			let trElement = document.createElement("tr");
+			
+			let cellTitle = document.createElement("td");
+			let cellSponsor = document.createElement("td");
+			let cellParty = document.createElement("td");
+			let cellState = document.createElement("td");
+			
+			let cellFollow = document.createElement("button");
+			let cellDetail = document.createElement("button");
+			
+			cellTitle.innerHTML = data.results[0].bills[i].title;
+			cellSponsor.innerHTML = data.results[0].bills[i].sponsor_name;
+			cellParty.innerHTML = party[i];
+			cellState.innerHTML = data.results[0].bills[i].sponsor_state;
+			
+			cellFollow.setAttribute("id", "button"+i.toString());
+			cellDetail.setAttribute("id", "detail"+i.toString());
+			cellFollow.setAttribute("value", data.results[0].bills[i].bill_id);
+			cellDetail.setAttribute("value", data.results[0].bills[i].bill_id);
+			cellFollow.innerHTML = "Follow";
+			cellDetail.innerHTML = "Detail";
+			
+			
+			
+			trElement.appendChild(cellFollow);
+			trElement.appendChild(cellTitle);
+			trElement.appendChild(cellSponsor);
+			trElement.appendChild(cellParty);
+			trElement.appendChild(cellState);
+			
+			
+			
+			
+			trElement.appendChild(cellDetail);
+			
+			
+			tbodyElement.appendChild(trElement);
+			
+			
+			
+			
+			
 			document.querySelector("#detail"+i.toString()).onclick = function () {
 				alert(this.value);
 			}
@@ -241,7 +284,7 @@ String message = (String) session.getAttribute ("username");
 			xhr.send();
 			//already following
 			if(xhr.responseText == "true") {
-				document.querySelector("#button"+i.toString()).style = "font-size:36px;";
+				document.querySelector("#button"+i.toString()).style = "font-size:32px;";
 				document.querySelector("#button"+i.toString()).setAttribute("class", "fa fa-thumbs-down");
 				document.querySelector("#button"+i.toString()).onclick = function() {
 					if(sessionStorage.getItem("log") == null) {
